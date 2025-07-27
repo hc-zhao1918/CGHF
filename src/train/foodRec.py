@@ -283,7 +283,7 @@ def train_model(df, graph, health_status):
         avg_contrastive_loss = contrastive_loss / len(dataloader)
         logger.info(f"Epoch [{epoch + 1}/{num_epochs}] - "
                     f"Total Loss: {avg_total_loss:.4f}, "
-                    f"Rating Loss: {avg_rating_loss:.4f}, "
+                    f"Nla Loss: {avg_rating_loss:.4f}, "
                     f"Contrastive Loss: {avg_contrastive_loss:.4f}")
     return model, user_encoder, recipe_encoder
 

@@ -62,8 +62,6 @@ def Load_Into_Graph(df):
         G.add_edge(uid, mid, weight=row['rating'], edge_type='rating')
         for genre in row['genres']:
             G.add_edge(mid, genre, edge_type='genre')
-    logging.info("Finished building movie graph")
-    logging.info(f"Graph contains {G.number_of_nodes()} nodes and {G.number_of_edges()} edges")
     return G
 
 def find_paths_users_interests(df):
@@ -325,12 +323,10 @@ def main():
     mid_tensor = torch.LongTensor(list(range(num_movies))).to(device)
     gid_tensor = torch.LongTensor(list(range(num_genres))).to(device)
     embeddings_nla = nla_model.get_embeddings(uid_tensor, mid_tensor, gid_tensor)
-    logging.info("NLA Embeddings generated")
     contrastive_model = ContrastiveModel(num_users, num_movies, num_genres, embedding_dim).to(device)
     contrastive_optimizer = optim.Adam(contrastive_model.parameters(), lr=0.001)
     contrastive_dataset = ContrastiveDataset(df, user_encoder, movie_encoder, genre_encoder)
     contrastive_loader = DataLoader(contrastive_dataset, batch_size=128, shuffle=True)
-    logging.info("Training contrastive model...")
     for epoch in range(50):
         total_loss = 0.0
         for batch in contrastive_loader:
